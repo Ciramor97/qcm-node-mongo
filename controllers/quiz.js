@@ -3,6 +3,7 @@ const { Answer } = require('../models/answer');
 
 module.exports = {
   create: async (req, res) => {
+    console.log("GOT VALUE===",req.body)
     const { label, answers, parentAnswer } = req.body;
     const quiz = new Quiz({ label, parentAnswer });
     await quiz.save();
@@ -26,5 +27,4 @@ module.exports = {
     if (!quiz) res.status(404).send("The quiz can't be created");
     res.status(201).json(quiz);
   },
-  get: async (req, res) => {},
 };
