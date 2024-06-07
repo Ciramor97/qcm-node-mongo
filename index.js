@@ -1,18 +1,20 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
+
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 const { Quiz } = require('./models/quiz');
-const { Answer } = require('./models/answer');
+const { Submission } = require('./models/submission');
 
 // const cors = require('cors');
 require('dotenv/config');
 
 const port = 3000;
 
-// app.use(cors());
-// app.options('*', cors());
+app.use(cors());
+app.options('*', cors());
 
 app.use(bodyParser.json());
 
@@ -30,6 +32,13 @@ const connection_url = process.env.CONNECTION_STRING;
 
 
 // app.use(`${api}/quiz`, quizRouter );
+/*
+{
+	"label":"Avez vous besoin d'un depanneur?",
+	"answers":[{"label":"Bien sur"},{"label":"Pas du tout"}],
+	"parentAnswer":"665ba74f2919280f6ca57bef"
+}
+*/
 app.post(`/`,  async (req, res) => {
   console.log("STARTING.....");
   console.log("Req Body",req.body)
@@ -57,7 +66,28 @@ app.post(`/`,  async (req, res) => {
   res.status(201).json(quiz);
 } );
 
-app.get(`/`, async (req, res) => {
+
+app.post(`/order`,  async (req, res) => {
+  console.log("Req Body submission",req.body)
+  const { userInfos, quizAnswers } = req.body;
+  let submission = new Submission({ userInfos, quizAnswers });
+  await submission.save();
+
+  
+  if (!submission) res.status(404).send("The submission can't be created");
+  res.status(201).json(submission);
+} );
+
+app.get(`/order`, async (_, res) => {
+  console.log("get order controller");
+  const orderList = await Submission.find().sort({ createdAt: -1 })
+  if (!orderList) {
+      res.status(500).send({ success: false })
+  }
+  res.send(orderList)
+})
+
+app.get(`/`, async (_, res) => {
   console.log("get controller");
   const quizList = await Quiz.find()
       .populate('answers','')
@@ -67,15 +97,17 @@ app.get(`/`, async (req, res) => {
   res.send(quizList)
 })
 
-app.get(`/:id`, async (req, res) => {
-  console.log("get controller");
-  const quiz = await Quiz.findById(req.params.id).populate('answers')
-  console.log("get one quiz==",quiz);
-  if (!quiz) {
-      res.status(500).send({ success: false })
-  }
-  res.send(quiz)
-})
+
+
+// app.get(`/:id`, async (req, res) => {
+//   console.log("get controller");
+//   const quiz = await Quiz.findById(req.params.id).populate('answers')
+//   console.log("get one quiz==",quiz);
+//   if (!quiz) {
+//       res.status(500).send({ success: false })
+//   }
+//   res.send(quiz)
+// })
 
 
 mongoose
