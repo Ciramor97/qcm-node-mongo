@@ -1,41 +1,62 @@
 const express = require('express');
 const router = express.Router();
-const QuizController = require('../controllers/quiz');
+const {create,get} = require('../controllers/quiz');
 
-router.post(`/create`, async (req, res) => {
-    console.log("create work");
-    // console.log("GOT VALUE===",req.body)
-    // const { label, answers, parentAnswer } = req.body;
-    // const quiz = new Quiz({ label, parentAnswer });
-    // await quiz.save();
 
-    // const answersIds = Promise.all(
-    //   answers.map(async (answer) => {
-    //     let newAnswer = new Answer({
-    //       label: answer.label,
-    //       quiz: quiz._id,
-    //     });
 
-    //     newAnswer = await newAnswer.save();
+/**
+ * @swagger
+ * /quiz:
+ *   post:
+ *     parameters:
+ *      - in: body
+ *        name: quiz
+ *        description: New quiz
+ *        schema:
+ *          type: object
+ *          properties:
+ *            label:
+ *              type: string
+ *            answers:
+ *              type: array
+ *              items:
+ *                properties:
+ *                  label:
+ *                    type: string
+ *            parentAnswer:
+ *              type: string
+ *     responses:
+ *       201:
+ *         description: Created quiz
+ */
+router.post(`/`,create );
 
-    //     return newAnswer._id;
-    //   })
-    // );
-
-    // quiz.responses = answersIds;
-    // await quiz.save();
-
-    // if (!quiz) res.status(404).send("The quiz can't be created");
-    // res.status(201).json(quiz);
-  });
-
-router.get(`/`,  (req, res) => {
-    console.log('ici=== pas ici');
-    const test = {
-      id:1,
-      label:"update..."
-    }
-    res.send(test)
-  },);
+/**
+ * @swagger
+ * /quiz:
+ *   get:
+ *     responses:
+ *       200:
+ *         description: The list of the quiz
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   label:
+ *                     type: string
+ *                   answers:
+ *                     type: array
+ *                     items: 
+ *                       type: object
+ *                       properties:
+ *                         id: string
+ *                         label: string
+ *                   parentAnswer:
+ *                     type: string
+ */
+router.get(`/`, get);
 
 module.exports = router;
