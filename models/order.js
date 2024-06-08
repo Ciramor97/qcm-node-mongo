@@ -10,7 +10,7 @@ const UserInfosSchema = new mongoose.Schema({
     payment_mode: { type: String, required: true },
   });
 
-const submissionSchema = new mongoose.Schema({
+const OrderSchema = new mongoose.Schema({
   userInfos:{ type: UserInfosSchema, default: null },
   quizAnswers:{
     type: Map,
@@ -18,4 +18,4 @@ const submissionSchema = new mongoose.Schema({
   }
 },{ timestamps: true });
 
-exports.Submission = mongoose.model('Submission', submissionSchema);
+exports.Order = mongoose.model('Order', OrderSchema);
