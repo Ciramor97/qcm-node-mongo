@@ -36,6 +36,6 @@ module.exports = {
         res.status(500).send({ success: false })
     }
     res.send(quizList)
-  }
+  },
 
 };

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {create,get} = require('../controllers/quiz');
+const {create,get, getOne} = require('../controllers/quiz');
 
 
 
@@ -58,5 +58,6 @@ router.post(`/`,create );
  *                     type: string
  */
 router.get(`/`, get);
+
 
 module.exports = router;
