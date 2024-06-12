@@ -1,7 +1,30 @@
-# Simple express demo
+# API Qualification d'un chantier de dépannage
 
-> Express: fast, unopinionated, minimalist web framework for Node.js
+## Prerequisites
 
-This project shows a simple express server serving a single HTML page and using `express.static` to serve static files.
+- Node 16.20.2 installed
 
-Check out the [express documentation](https://expressjs.com/) for more information.
+## Setup
+
+```
+
+git clone https://github.com/Ciramor97/qcm-node-mongo.git
+
+cd qcm-node-mongo
+
+To install packages:
+
+- Run `npm i`
+
+To start the project:
+
+- Run `npm run serve `
+
+Be sure the database connection is ready before start requesting
+
+The documentation is available at: http://localhost:3000/api-docs
+
+In postman use : http://localhost:3000/api/v1/[order-quiz]
+
+
+```
